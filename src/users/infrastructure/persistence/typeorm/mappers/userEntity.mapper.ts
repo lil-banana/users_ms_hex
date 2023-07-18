@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
 import { User } from '../../../../domain/models/user.model';
 import { UserEntity } from '../entities/user.entity';
+import { RoleEntityMapper } from './roleEntity.mapper';
 
 export class UserEntityMapper {
+    private readonly roleEntityMapper: RoleEntityMapper = new RoleEntityMapper();
+
     toUser(userEntity: UserEntity): User {
         const user: User = new User(
             userEntity.id,
@@ -13,39 +15,22 @@ export class UserEntityMapper {
             userEntity.birthDay,
             userEntity.email,
             userEntity.password,
-            userEntity.roleId
+            this.roleEntityMapper.toRole(userEntity.role)
         );
         return user;
     }
 
-    toUserList(userEntityList: UserEntity[]): User[] {
-        return userEntityList.map(userEntity => {
-            const user: User = new User(
-                userEntity.id,
-                userEntity.name,
-                userEntity.lastName,
-                userEntity.documentNumber,
-                userEntity.cellphoneNumber,
-                userEntity.birthDay,
-                userEntity.email,
-                userEntity.password,
-                userEntity.roleId
-            );
-            return user;
-        });
-    }
-
     toUserEntity(user: User): UserEntity {
         const userEntity: UserEntity = new UserEntity();
-        userEntity.id = user.getId();
-        userEntity.name = user.getName();
-        userEntity.lastName = user.getLastName();
-        userEntity.documentNumber = user.getDocumentNumber();
-        userEntity.cellphoneNumber = user.getCellphoneNumber();
-        userEntity.birthDay = user.getBirthDay();
-        userEntity.email = user.getEmail();
-        userEntity.password = user.getPassword();
-        userEntity.roleId = user.getRoleId();
+        userEntity.id = user.id;
+        userEntity.name = user.name;
+        userEntity.lastName = user.lastName;
+        userEntity.documentNumber = user.documentNumber;
+        userEntity.cellphoneNumber = user.cellphoneNumber;
+        userEntity.birthDay = user.birthDay;
+        userEntity.email = user.email;
+        userEntity.password = user.password;
+        userEntity.role = this.roleEntityMapper.toRoleEntity(user.role);
         return userEntity;
     }
 }

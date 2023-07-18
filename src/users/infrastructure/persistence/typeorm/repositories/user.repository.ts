@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class UserRepository {
         return this.userRepository.findOne({ where: { id } });
     }
 
-    findAll(): Promise<UserEntity[]> {
-        return this.userRepository.find();
+    findOneByDocumentNumber(documentNumber: string): Promise<UserEntity | null> {
+        return this.userRepository.findOne({ where: { documentNumber } });
     }
 }

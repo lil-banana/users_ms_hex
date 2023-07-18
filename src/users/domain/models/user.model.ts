@@ -1,96 +1,94 @@
+import { UserDocumentNumber } from './value-objects/userDocumentNumber.vo';
+import { UserCellphoneNumber } from './value-objects/userCellphoneNumber.vo';
+import { UserBirthDay } from './value-objects/userBirthDay.vo';
+import { UserEmail } from './value-objects/userEmail.vo';
+import { Role } from './role.model';
+
 export class User {
+    private readonly _id: string;
+    private _name: string;
+    private _lastName: string;
+    private readonly _documentNumber: UserDocumentNumber;
+    private _cellphoneNumber: UserCellphoneNumber;
+    private _birthDay: UserBirthDay;
+    private _email: UserEmail;
+    private _password: string;
+    private _role: Role;
 
-    private id: string;
-    private name: string;
-    private lastName: string;
-    private documentNumber: string;
-    private cellphoneNumber: string;
-    private birthDay: Date;
-    private email: string;
-    private password: string;
-    private roleId: string;
-
-    constructor(id: string, name: string, lastName: string, documentNumber: string, cellphoneNumber: string, birthDay: Date, email: string, password: string, roleId: string) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.documentNumber = documentNumber;
-        this.cellphoneNumber = cellphoneNumber;
-        this.birthDay = birthDay;
-        this.email = email;
-        this.password = password;
-        this.roleId = roleId;
+    constructor(id: string, name: string, lastName: string, documentNumber: string, cellphoneNumber: string, birthDay: Date, email: string, password: string, role: Role) {
+        this._id = id;
+        this._name = name;
+        this._lastName = lastName;
+        this._documentNumber = new UserDocumentNumber(documentNumber);
+        this._cellphoneNumber = new UserCellphoneNumber(cellphoneNumber);
+        this._birthDay = new UserBirthDay(birthDay);
+        this._email = new UserEmail(email);
+        this._password = password;
+        this._role = role;
     }
 
-    getId(): string {
-        return this.id;
+    get id(): string {
+        return this._id;
     }
 
-    setId(id: string): void {
-        this.id = id;
+    get name(): string {
+        return this._name;
     }
 
-    getName(): string {
-        return this.name;
+    set name(name: string) {
+        this._name = name;
     }
 
-    setName(name: string): void {
-        this.name = name;
+    get lastName(): string {
+        return this._lastName;
     }
 
-    getLastName(): string {
-        return this.lastName;
+    set lastName(lastName: string) {
+        this._lastName = lastName;
     }
 
-    setLastName(lastName: string): void {
-        this.lastName = lastName;
+    get documentNumber(): string {
+        return this._documentNumber.value;
     }
 
-    getDocumentNumber(): string {
-        return this.documentNumber;
+    get cellphoneNumber(): string {
+        return this._cellphoneNumber.value;
     }
 
-    setDocumentNumber(documentNumber: string): void {
-        this.documentNumber = documentNumber;
+    set cellphoneNumber(cellphoneNumber: string) {
+        this._cellphoneNumber = new UserCellphoneNumber(cellphoneNumber);
     }
 
-    getBirthDay(): Date {
-        return this.birthDay;
+    get birthDay(): Date {
+        return this._birthDay.value;
     }
 
-    setBirthDay(birthDay: Date): void {
-        this.birthDay = birthDay;
+    set birthDay(birthDay: Date) {
+        this._birthDay = new UserBirthDay(birthDay);
     }
 
-    getCellphoneNumber(): string {
-        return this.cellphoneNumber;
+    get email(): string {
+        return this._email.value;
     }
 
-    setCellphoneNumber(cellphoneNumber: string): void {
-        this.cellphoneNumber = cellphoneNumber;
+    set email(email: string) {
+        this._email = new UserEmail(email);
     }
 
-    getEmail(): string {
-        return this.email;
+    get password(): string {
+        return this._password;
     }
 
-    setEmail(email: string): void {
-        this.email = email;
+    set password(password: string) {
+        this._password = password;
     }
 
-    getPassword(): string {
-        return this.password;
+    get role(): Role {
+        return this._role;
     }
 
-    setPassword(password: string): void {
-        this.password = password;
+    set role(role: Role) {
+        this._role = role;
     }
 
-    getRoleId(): string {
-        return this.roleId;
-    }
-
-    setRoleId(roleId: string): void {
-        this.roleId = roleId;
-    }
 }

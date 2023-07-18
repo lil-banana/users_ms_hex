@@ -1,26 +1,40 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Inject, forwardRef } from '@nestjs/common';
-import { IUserUseCase } from '../../application/ports/user.usecase';
-import { UserRequest } from '../../application/dto/userRequest.dto';
-import { UserResponse } from '../../application/dto/userResponse.dto';
-import { UserUseCase } from 'src/users/application/usecases/user.usecase';
+import { Controller, Get, Post, Body, Param, Inject } from '@nestjs/common';
+import { UserRequest } from './dto/userRequest.dto';
+import { UserResponse } from './dto/userResponse.dto';
+import { UserRequestMapper } from './mappers/userRequest.mapper';
+import { UserResponseMapper } from './mappers/userResponse.mapper';
+import { CREATE_USER_USE_CASE, ICreateUserUseCase } from '../../domain/interfaces/createUser.interface';
+import { GET_USER_USE_CASE, IGetUserUseCase } from '../../domain/interfaces/getUser.interface';
+import { User } from '../../domain/models/user.model';
+import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('users')
 export class UserController {
-
-    constructor(@Inject(forwardRef(() => UserUseCase)) private readonly userUseCase: IUserUseCase) { }
+    private readonly userRequestMapper: UserRequestMapper = new UserRequestMapper();
+    private readonly userResponseMapper: UserResponseMapper = new UserResponseMapper();
+    
+    constructor(
+        @Inject(CREATE_USER_USE_CASE) private readonly createUserUseCase: ICreateUserUseCase,
+        @Inject(GET_USER_USE_CASE) private readonly getUserUseCase: IGetUserUseCase
+    ) { }
 
     @Post()
+    @ApiResponse({ status: 201, description: 'Creates a new user', type: UserResponse })
     async saveUser(@Body() userRequest: UserRequest): Promise<UserResponse> {
-        return this.userUseCase.saveUser(userRequest);
-    }
-
-    @Get()
-    async getUsers(): Promise<UserResponse[]> {
-        return this.userUseCase.getUsers();
+        try {
+            const user: User = this.userRequestMapper.toUser(userRequest);
+            return this.userResponseMapper.toUserResponse(await this.createUserUseCase.saveUser(user));
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
     }
 
     @Get(':id')
+    @ApiResponse({ status: 200, description: 'Returns the user with the given id', type: UserResponse })
+    @ApiParam({ name: 'id', description: 'The ID of the user, is a uuid', example: '91764071-9108-48f6-968c-9022e34a6ac8' })
     async getUser(@Param('id') userId: string): Promise<UserResponse> {
-        return this.userUseCase.getUser(userId);
+        return this.userResponseMapper.toUserResponse(await this.getUserUseCase.getUser(userId));
     }
 }
