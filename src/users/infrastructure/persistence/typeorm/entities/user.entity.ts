@@ -13,7 +13,7 @@ export class UserEntity {
     @Column({ nullable: false })
     lastName: string;
 
-    @Column({ unique: true })
+    @Column({ unique: true, nullable: false })
     documentNumber: string;
 
     @Column({ nullable: false })
@@ -22,7 +22,7 @@ export class UserEntity {
     @Column({ nullable: false })
     birthDay: Date;
 
-    @Column({ nullable: false })
+    @Column({ unique: true, nullable: false })
     email: string;
 
     @Column({ nullable: false })

@@ -1,13 +1,11 @@
 import { CreateUserUseCase } from '../../../../../src/users/application/usecases/createUser.usecase';
-import { UserPersistencePort } from '../../../../../src/users/domain/repositories/user.repository';
 import { User } from '../../../../../src/users/domain/models/user.model';
 import { VALID_USER } from '../../mocks/user.mock';
-import { PasswordEncryptionService } from 'src/users/application/services/passwordEncryption.service';
 
 describe('Create User Use Case', () => {
-    let userRepository: UserPersistencePort;
     let createUserUseCase: CreateUserUseCase;
-    let passwordEncryptionService: PasswordEncryptionService;
+    let userRepository: any;
+    let passwordEncryptionService: any;
 
     beforeEach(() => {
         userRepository = {

@@ -6,4 +6,9 @@ export class PasswordEncryptionService {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         return hashedPassword;
     }
+
+    async checkPassword(password: string, hash: string): Promise<boolean> {
+        const matches = await bcrypt.compare(password, hash);
+        return matches;
+    }
 }

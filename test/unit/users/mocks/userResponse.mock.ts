@@ -1,4 +1,4 @@
-import { UserResponse } from '../../../../src/users/infrastructure/controllers/dto/userResponse.dto';
+import { UserResponse } from '../../../../src/users/infrastructure/controllers/dtos/userResponse.dto';
 import { VALID_USER } from './user.mock';
 import { OWNER_ROLE_DTO } from './roleDto.mock';
 

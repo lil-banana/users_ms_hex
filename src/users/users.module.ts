@@ -11,9 +11,12 @@ import { UserEntityMapper } from './infrastructure/persistence/typeorm/mappers/u
 import { USER_PERSISTENCE_PORT } from './domain/repositories/user.repository';
 import { CREATE_USER_USE_CASE } from './domain/interfaces/createUser.interface';
 import { GET_USER_USE_CASE } from './domain/interfaces/getUser.interface';
+import { TokenService } from '../auth/application/services/token.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([UserEntity, RoleEntity])],
+    imports: [
+        TypeOrmModule.forFeature([UserEntity, RoleEntity])
+    ],
     controllers: [UserController],
     providers: [
         UserRepository,
@@ -32,7 +35,9 @@ import { GET_USER_USE_CASE } from './domain/interfaces/getUser.interface';
         {
             provide: GET_USER_USE_CASE,
             useClass: GetUserUseCase,
-        }
+        },
+        TokenService
     ],
+    exports: [USER_PERSISTENCE_PORT]
 })
 export class UsersModule { }

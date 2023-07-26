@@ -1,5 +1,5 @@
 import { User } from '../../../../../../src/users/domain/models/user.model';
-import { UserRequest } from '../../../../../../src/users/infrastructure/controllers/dto/userRequest.dto';
+import { UserRequest } from '../../../../../../src/users/infrastructure/controllers/dtos/userRequest.dto';
 import { UserRequestMapper } from '../../../../../../src/users/infrastructure/controllers/mappers/userRequest.mapper';
 import { VALID_USER_REQUEST, VALID_USER_REQUEST_NO_ROLE } from '../../../mocks/userRequest.mock';
 import { VALID_USER_NO_ID, VALID_USER_NO_ID_NO_ROLE } from '../../../mocks/user.mock';
