@@ -1,7 +1,7 @@
 import { InvalidArgumentError } from '../../exceptions/invalidArgumentError.exception';
 
 export class UserCellphoneNumber {
-    private readonly validCellphoneNumberRegExp = /^((\+\d{1,12})|(\d{1,13}))$/;
+    private readonly validCellphoneNumberRegExp = /^(\+\d{1,12}|\d{1,13})$/;
 
     constructor(readonly value: string) {
         this.value = value;

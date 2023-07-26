@@ -1,6 +1,6 @@
 import { Role } from '../../../domain/models/role.model';
 import { User } from '../../../domain/models/user.model';
-import { UserRequest } from '../dto/userRequest.dto';
+import { UserRequest } from '../dtos/userRequest.dto';
 import { OWNER_ROLE_ID } from '../../constants'
 
 export class UserRequestMapper {

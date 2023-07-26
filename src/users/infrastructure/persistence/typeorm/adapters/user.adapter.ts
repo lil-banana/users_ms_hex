@@ -17,7 +17,7 @@ export class UserAdapter implements UserPersistencePort {
     ) { }
 
     async saveUser(user: User): Promise<User> {
-        if (await this.userRepository.findOneByDocumentNumber(user.documentNumber)) {
+        if (await this.userRepository.findOneByEmail(user.email)) {
             throw new UserAlreadyExistsException();
         }
         const userEntity: UserEntity = this.userEntityMapper.toUserEntity(user);
@@ -26,6 +26,14 @@ export class UserAdapter implements UserPersistencePort {
 
     async getUser(userId: string): Promise<User> {
         const userEntity: UserEntity = await this.userRepository.findOneById(userId);
+        if (!userEntity) {
+            throw new UserNotFoundException();
+        }
+        return this.userEntityMapper.toUser(userEntity);
+    }
+
+    async getUserByEmail(email: string): Promise<User> {
+        const userEntity: UserEntity = await this.userRepository.findOneByEmail(email);
         if (!userEntity) {
             throw new UserNotFoundException();
         }

@@ -1,4 +1,4 @@
-import { UserRequest } from '../../../../src/users/infrastructure/controllers/dto/userRequest.dto';
+import { UserRequest } from '../../../../src/users/infrastructure/controllers/dtos/userRequest.dto';
 import { OTHER_ROLE_ONLY_ID } from './role.mock';
 import { VALID_USER_NO_ID, VALID_USER_NO_ID_NO_ROLE } from './user.mock';
 

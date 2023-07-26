@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './users/infrastructure/persistence/typeorm/entities/user.entity';
 import { RoleEntity } from './users/infrastructure/persistence/typeorm/entities/role.entity';
@@ -7,6 +8,7 @@ import { RoleEntity } from './users/infrastructure/persistence/typeorm/entities/
 @Module({
     imports: [
         UsersModule,
+        AuthModule,
         TypeOrmModule.forRoot({
             type: 'postgres',
             host: 'localhost',
@@ -16,7 +18,7 @@ import { RoleEntity } from './users/infrastructure/persistence/typeorm/entities/
             database: 'test',
             entities: [UserEntity, RoleEntity],
             synchronize: true,
-        }),
+        })
     ]
 })
 export class AppModule { }

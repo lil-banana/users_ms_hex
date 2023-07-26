@@ -1,5 +1,5 @@
 import { Role } from '../../../domain/models/role.model';
-import { RoleDto } from '../dto/role.dto';
+import { RoleDto } from '../dtos/role.dto';
 
 export class RoleDtoMapper {
     toRoleDto(role: Role): RoleDto {

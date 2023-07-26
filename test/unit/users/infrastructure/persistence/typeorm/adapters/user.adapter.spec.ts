@@ -16,7 +16,7 @@ describe('User Adapter', () => {
         userRepository = {
             save: jest.fn(),
             findOneById: jest.fn(),
-            findOneByDocumentNumber: jest.fn()
+            findOneByEmail: jest.fn()
         };
         userEntityMapper = {
             toUser: jest.fn(),
@@ -35,18 +35,18 @@ describe('User Adapter', () => {
                 const expectedUserEntity: UserEntity = VALID_USER_ENTITY;
                 const expectedUser: User = VALID_USER;
 
-                jest.spyOn(userRepository, 'findOneByDocumentNumber').mockResolvedValue(null);
+                jest.spyOn(userRepository, 'findOneByEmail').mockResolvedValue(null);
                 jest.spyOn(userEntityMapper, 'toUserEntity').mockReturnValue(userEntity);
                 jest.spyOn(userRepository, 'save').mockResolvedValue(expectedUserEntity);
                 jest.spyOn(userEntityMapper, 'toUser').mockReturnValue(expectedUser);
 
                 const result = await userAdapter.saveUser(user);
 
-                expect(userRepository.findOneByDocumentNumber).toHaveBeenCalledWith(user.documentNumber);
+                expect(result).toEqual(expectedUser);
+                expect(userRepository.findOneByEmail).toHaveBeenCalledWith(user.email);
                 expect(userEntityMapper.toUserEntity).toHaveBeenCalledWith(user);
                 expect(userRepository.save).toHaveBeenCalledWith(userEntity);
                 expect(userEntityMapper.toUser).toHaveBeenCalledWith(expectedUserEntity);
-                expect(result).toEqual(expectedUser);
             });
         });
 
@@ -55,10 +55,10 @@ describe('User Adapter', () => {
                 const user: User = VALID_USER_NO_ID;
                 const userEntity: UserEntity = VALID_USER_ENTITY;
 
-                jest.spyOn(userRepository, 'findOneByDocumentNumber').mockResolvedValue(userEntity);
+                jest.spyOn(userRepository, 'findOneByEmail').mockResolvedValue(userEntity);
 
                 await expect(userAdapter.saveUser(user)).rejects.toThrow(UserAlreadyExistsException);
-                expect(userRepository.findOneByDocumentNumber).toHaveBeenCalledWith(user.documentNumber);
+                expect(userRepository.findOneByEmail).toHaveBeenCalledWith(user.email);
             });
         });
     });
@@ -89,6 +89,35 @@ describe('User Adapter', () => {
 
                 await expect(userAdapter.getUser(userId)).rejects.toThrow(UserNotFoundException);
                 expect(userRepository.findOneById).toHaveBeenCalledWith(userId);
+            });
+        });
+    });
+
+    describe('getUserByEmail', () => {
+        describe('Success', () => {
+            it('should retrieve a user by Email', async () => {
+                const expectedUserEntity: UserEntity = VALID_USER_ENTITY;
+                const expectedUser: User = VALID_USER;
+
+                jest.spyOn(userRepository, 'findOneByEmail').mockResolvedValue(expectedUserEntity);
+                jest.spyOn(userEntityMapper, 'toUser').mockReturnValue(expectedUser);
+
+                const result = await userAdapter.getUserByEmail(expectedUser.email);
+
+                expect(result).toEqual(expectedUser);
+                expect(userRepository.findOneByEmail).toHaveBeenCalledWith(expectedUser.email);
+                expect(userEntityMapper.toUser).toHaveBeenCalledWith(expectedUserEntity);
+            });
+        });
+
+        describe('Failure', () => {
+            it('should throw UserNotFoundException if user is not found', async () => {
+                const email = VALID_USER.email;
+
+                jest.spyOn(userRepository, 'findOneByEmail').mockResolvedValue(null);
+
+                await expect(userAdapter.getUserByEmail(email)).rejects.toThrow(UserNotFoundException);
+                expect(userRepository.findOneByEmail).toHaveBeenCalledWith(email);
             });
         });
     });

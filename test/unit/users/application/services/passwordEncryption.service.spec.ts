@@ -20,5 +20,17 @@ describe('Password Encryption Service', () => {
             expect(bcrypt.hash).toHaveBeenCalledWith(password, saltRounds);
             expect(hashedPassword).toBe(expectedHashedPassword);
         });
+
+        it('should check the password', async () => {
+            const password = 'password';
+            const hashedPassword = 'hashedPassword';
+
+            jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
+
+            const matches: boolean = await passwordEncryptionService.checkPassword(password, hashedPassword);
+            
+            expect(matches).toBe(true);
+            expect(bcrypt.compare).toHaveBeenCalledWith(password, hashedPassword);
+        });
     });
 });

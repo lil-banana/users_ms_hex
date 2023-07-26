@@ -1,5 +1,5 @@
 import { User } from '../../../domain/models/user.model';
-import { UserResponse } from '../dto/userResponse.dto';
+import { UserResponse } from '../dtos/userResponse.dto';
 import { RoleDtoMapper } from './roleDto.mapper'; 
 
 export class UserResponseMapper {

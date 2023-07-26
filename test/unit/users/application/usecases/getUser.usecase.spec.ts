@@ -4,12 +4,11 @@ import { User } from '../../../../../src/users/domain/models/user.model';
 import { VALID_USER } from '../../mocks/user.mock';
 
 describe('Get User Use Case', () => {
-    let userRepository: UserPersistencePort;
     let getUserUseCase: GetUserUseCase;
+    let userRepository: any;
 
     beforeEach(() => {
         userRepository = {
-            saveUser: jest.fn(),
             getUser: jest.fn()
         };
         getUserUseCase = new GetUserUseCase(userRepository);
