@@ -6,7 +6,6 @@ export const VALID_EMPLOYEE_REQUEST: EmployeeRequest = {
     lastName: EMPLOYEE_USER_NO_ID.lastName,
     documentNumber: EMPLOYEE_USER_NO_ID.documentNumber,
     cellphoneNumber: EMPLOYEE_USER_NO_ID.cellphoneNumber,
-    birthDay: EMPLOYEE_USER_NO_ID.birthDay,
     email: EMPLOYEE_USER_NO_ID.email,
     password: EMPLOYEE_USER_NO_ID.password,
     roleId: EMPLOYEE_USER_NO_ID.role.id

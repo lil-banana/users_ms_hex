@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsDate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class EmployeeRequest {
+export class ClientRequest {
     @IsNotEmpty()
     @IsString()
     @ApiProperty({ description: 'The name of the user', example: 'John' })
