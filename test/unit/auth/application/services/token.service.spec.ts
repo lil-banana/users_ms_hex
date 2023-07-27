@@ -17,14 +17,15 @@ describe('Token Service', () => {
             it('should sign a token with given payload', async () => {
                 const userId = 'id';
                 const role = 'role';
+                const bossId = 'bossId';
                 const expectedToken = 'token';
 
                 jest.spyOn(jwtService, 'signAsync').mockResolvedValue(expectedToken);
 
-                const token: string = await tokenService.signToken(userId, role);
+                const token: string = await tokenService.signToken(userId, role, bossId);
 
                 expect(token).toBe(expectedToken);
-                expect(jwtService.signAsync).toHaveBeenCalledWith({ userId, role });
+                expect(jwtService.signAsync).toHaveBeenCalledWith({ userId, role, bossId });
             });
         })
 

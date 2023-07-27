@@ -11,11 +11,12 @@ export class CreateUserUseCase implements ICreateUserUseCase {
         @Inject(USER_PERSISTENCE_PORT) private readonly userRepository: UserPersistencePort
     ) { }
 
-    async saveUser(user: User): Promise<User> {
+    async saveUser(user: User): Promise<string> {
         try {
             user.password = await this.passwordEncryptionService.encryptPassword(user.password);
             return this.userRepository.saveUser(user);
         } catch (e) {
+            console.error(e);
             throw e;
         }
     }

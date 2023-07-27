@@ -10,12 +10,13 @@ export class UserEntityMapper {
             userEntity.id,
             userEntity.name,
             userEntity.lastName,
+            userEntity.password,
+            userEntity.role ? this.roleEntityMapper.toRole(userEntity.role) : undefined,
+            userEntity.email,
             userEntity.documentNumber,
             userEntity.cellphoneNumber,
             userEntity.birthDay,
-            userEntity.email,
-            userEntity.password,
-            this.roleEntityMapper.toRole(userEntity.role)
+            userEntity.boss ? this.toUser(userEntity.boss) : undefined
         );
         return user;
     }
@@ -30,7 +31,8 @@ export class UserEntityMapper {
         userEntity.birthDay = user.birthDay;
         userEntity.email = user.email;
         userEntity.password = user.password;
-        userEntity.role = this.roleEntityMapper.toRoleEntity(user.role);
+        userEntity.role = user.role ? this.roleEntityMapper.toRoleEntity(user.role): undefined;
+        userEntity.boss = user.boss ? this.toUserEntity(user.boss) : undefined;
         return userEntity;
     }
 }

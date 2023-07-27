@@ -17,6 +17,7 @@ describe('Create User Use Case', () => {
         };
         createUserUseCase = new CreateUserUseCase(userRepository);
         (createUserUseCase as any).passwordEncryptionService = passwordEncryptionService;
+        jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     describe('Success', () => {

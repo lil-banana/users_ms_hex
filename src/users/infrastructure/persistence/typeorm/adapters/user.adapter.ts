@@ -16,12 +16,12 @@ export class UserAdapter implements UserPersistencePort {
         private readonly userRepository: UserRepository
     ) { }
 
-    async saveUser(user: User): Promise<User> {
+    async saveUser(user: User): Promise<string> {
         if (await this.userRepository.findOneByEmail(user.email)) {
             throw new UserAlreadyExistsException();
         }
         const userEntity: UserEntity = this.userEntityMapper.toUserEntity(user);
-        return this.userEntityMapper.toUser(await this.userRepository.save(userEntity));
+        return (await this.userRepository.save(userEntity)).id;
     }
 
     async getUser(userId: string): Promise<User> {

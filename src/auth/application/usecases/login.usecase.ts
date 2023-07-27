@@ -18,7 +18,7 @@ export class LoginUseCase implements ILoginUseCase {
         try {
             const user: User = await this.userRepository.getUserByEmail(partialUser.email);
             if (await this.passwordEncryptionService.checkPassword(partialUser.password, user.password)) {
-                return this.tokenService.signToken(user.id, user.role.name);
+                return this.tokenService.signToken(user.id, user.role.name, user.boss?.id);
             }
             throw new PasswordDoNotMatchException();
         } catch (e) {

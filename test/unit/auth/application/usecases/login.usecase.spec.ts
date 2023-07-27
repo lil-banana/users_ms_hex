@@ -38,7 +38,7 @@ describe('Login Use Case', () => {
             expect(token).toEqual('token');
             expect(userRepository.getUserByEmail).toHaveBeenCalledWith(partialUser.email);
             expect(passwordEncryptionService.checkPassword).toHaveBeenCalledWith(partialUser.password, savedUser.password);
-            expect(tokenService.signToken).toHaveBeenCalledWith(savedUser.id, savedUser.role.name);
+            expect(tokenService.signToken).toHaveBeenCalledWith(savedUser.id, savedUser.role.name, undefined);
         });
     });
 

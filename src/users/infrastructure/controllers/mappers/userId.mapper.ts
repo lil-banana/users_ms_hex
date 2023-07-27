@@ -1,10 +1,9 @@
-import { User } from '../../../domain/models/user.model';
 import { UserIdDto } from '../dtos/userId.dto';
 
 export class UserIdDtoMapper {
-    toUserIdDto(user: User): UserIdDto {
+    toUserIdDto(id: string): UserIdDto {
         const userIdDto: UserIdDto = new UserIdDto();
-        userIdDto.id = user.id;
+        userIdDto.id = id;
         return userIdDto;
     }
 }

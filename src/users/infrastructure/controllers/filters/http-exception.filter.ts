@@ -1,6 +1,5 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus, BadRequestException } from '@nestjs/common';
 import { UserNotFoundException } from '../../../../users/infrastructure/exceptions/userNotFoundException.exception';
-import { PasswordDoNotMatchException } from '../../../application/exceptions/passwordDoNotMatch.exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -17,9 +16,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
             if (Array.isArray(message)) {
                 message = message.join(', ');
             }
-        } else if (exception instanceof UserNotFoundException || exception instanceof PasswordDoNotMatchException) {
-            status = HttpStatus.UNAUTHORIZED;
-            message = 'Incorrect username or password';
+        } else if (exception instanceof UserNotFoundException) {
+            status = HttpStatus.NOT_FOUND;
+            message = 'User Not found';
         }
 
         response.status(status).json({

@@ -15,10 +15,16 @@ export class UserRepository {
     }
 
     findOneById(id: string): Promise<UserEntity | null> {
-        return this.userRepository.findOneBy({ id });
+        return this.userRepository.findOne({
+            where: { id },
+            relations: ['boss'],
+        });
     }
 
     findOneByEmail(email: string): Promise<UserEntity | null> {
-        return this.userRepository.findOneBy({ email });
+        return this.userRepository.findOne({
+            where: { email },
+            relations: ['boss'],
+        });
     }
 }
