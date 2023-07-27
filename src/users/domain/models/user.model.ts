@@ -14,17 +14,19 @@ export class User {
     private _email: UserEmail;
     private _password: string;
     private _role: Role;
+    private _boss: User;
 
-    constructor(id: string, name: string, lastName: string, documentNumber: string, cellphoneNumber: string, birthDay: Date, email: string, password: string, role: Role) {
+    constructor(id: string, name: string, lastName: string, password: string, role: Role, email?: string, documentNumber?: string, cellphoneNumber?: string, birthDay?: Date, boss?: User) {
         this._id = id;
         this._name = name;
         this._lastName = lastName;
-        this._documentNumber = new UserDocumentNumber(documentNumber);
-        this._cellphoneNumber = new UserCellphoneNumber(cellphoneNumber);
-        this._birthDay = new UserBirthDay(birthDay);
-        this._email = new UserEmail(email);
         this._password = password;
         this._role = role;
+        this._email = email ? new UserEmail(email) : undefined;
+        this._documentNumber = documentNumber ? new UserDocumentNumber(documentNumber) : undefined;
+        this._cellphoneNumber = cellphoneNumber ? new UserCellphoneNumber(cellphoneNumber) : undefined;
+        this._birthDay = birthDay ? new UserBirthDay(birthDay) : undefined;
+        this._boss = boss;
     }
 
     get id(): string {
@@ -48,11 +50,11 @@ export class User {
     }
 
     get documentNumber(): string {
-        return this._documentNumber.value;
+        return this._documentNumber?.value;
     }
 
     get cellphoneNumber(): string {
-        return this._cellphoneNumber.value;
+        return this._cellphoneNumber?.value;
     }
 
     set cellphoneNumber(cellphoneNumber: string) {
@@ -60,7 +62,7 @@ export class User {
     }
 
     get birthDay(): Date {
-        return this._birthDay.value;
+        return this._birthDay?.value;
     }
 
     set birthDay(birthDay: Date) {
@@ -68,7 +70,7 @@ export class User {
     }
 
     get email(): string {
-        return this._email.value;
+        return this._email?.value;
     }
 
     set email(email: string) {
@@ -91,4 +93,11 @@ export class User {
         this._role = role;
     }
 
+    get boss(): User {
+        return this._boss;
+    }
+
+    set boss(boss: User) {
+        this._boss = boss;
+    }
 }

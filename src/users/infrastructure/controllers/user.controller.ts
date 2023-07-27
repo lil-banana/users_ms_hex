@@ -1,20 +1,26 @@
-import { Controller, Get, Post, Body, Param, Inject, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Inject, UseGuards, Request, UseFilters } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { UserRequest } from './dtos/userRequest.dto';
+import { OwnerRequest } from './dtos/ownerRequest.dto';
+import { EmployeeRequest } from './dtos/employeeRequest.dto';
 import { UserIdDto } from './dtos/userId.dto';
 import { UserResponse } from './dtos/userResponse.dto';
-import { UserRequestMapper } from './mappers/userRequest.mapper';
+import { OwnerRequestMapper } from './mappers/ownerRequest.mapper';
+import { EmployeeRequestMapper } from './mappers/employeeRequest.mapper';
 import { UserIdDtoMapper } from './mappers/userId.mapper';
 import { UserResponseMapper } from './mappers/userResponse.mapper';
 import { CREATE_USER_USE_CASE, ICreateUserUseCase } from '../../domain/interfaces/createUser.interface';
 import { GET_USER_USE_CASE, IGetUserUseCase } from '../../domain/interfaces/getUser.interface';
 import { User } from '../../domain/models/user.model';
-import { CreateUserGuard } from '../../../auth/infrastructure/controllers/guards/createUser.guard';
+import { CreateOwnerGuard } from '../../../auth/infrastructure/controllers/guards/createOwner.guard';
+import { CreateEmployeeGuard } from '../../../auth/infrastructure/controllers/guards/createEmployee.guard';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 @ApiTags('users')
 @Controller('users')
+@UseFilters(new HttpExceptionFilter())
 export class UserController {
-    private readonly userRequestMapper: UserRequestMapper = new UserRequestMapper();
+    private readonly ownerRequestMapper: OwnerRequestMapper = new OwnerRequestMapper();
+    private readonly employeeRequestMapper: EmployeeRequestMapper = new EmployeeRequestMapper();
     private readonly userIdDtoMapper: UserIdDtoMapper = new UserIdDtoMapper();
     private readonly userResponseMapper: UserResponseMapper = new UserResponseMapper();
 
@@ -23,11 +29,19 @@ export class UserController {
         @Inject(GET_USER_USE_CASE) private readonly getUserUseCase: IGetUserUseCase
     ) { }
 
-    @Post()
-    @UseGuards(CreateUserGuard)
-    @ApiResponse({ status: 201, description: 'Creates a new user', type: UserIdDto })
-    async saveUser(@Body() userRequest: UserRequest): Promise<UserIdDto> {
-        const user: User = this.userRequestMapper.toUser(userRequest);
+    @Post('owner')
+    @UseGuards(CreateOwnerGuard)
+    @ApiResponse({ status: 201, description: 'Creates a new owner user', type: UserIdDto })
+    async saveOwner(@Body() ownerRequest: OwnerRequest): Promise<UserIdDto> {
+        const user: User = this.ownerRequestMapper.toUser(ownerRequest);
+        return this.userIdDtoMapper.toUserIdDto(await this.createUserUseCase.saveUser(user));
+    }
+
+    @Post('employee')
+    @UseGuards(CreateEmployeeGuard)
+    @ApiResponse({ status: 201, description: 'Creates a new employee user', type: UserIdDto })
+    async saveEmployee(@Body() employeeRequest: EmployeeRequest, @Request() request: any): Promise<UserIdDto> {
+        const user: User = this.employeeRequestMapper.toUser(employeeRequest, request.user.userId);
         return this.userIdDtoMapper.toUserIdDto(await this.createUserUseCase.saveUser(user));
     }
 

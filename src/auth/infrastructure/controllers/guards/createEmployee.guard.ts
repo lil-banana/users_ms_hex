@@ -1,8 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { TokenService } from '../../../application/services/token.service';
+import { EMPLOYEE_ROLE_ID } from '../../../../users/infrastructure/constants';
 
 @Injectable()
-export class CreateUserGuard implements CanActivate {
+export class CreateEmployeeGuard implements CanActivate {
     constructor(private readonly tokenService: TokenService) { }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -16,12 +17,13 @@ export class CreateUserGuard implements CanActivate {
 
         try {
             const payload = await this.tokenService.verifyToken(token);
-            if (!payload || !payload.role) {
+            if (!payload?.role) {
                 return false;
             }
-            if (!body.roleId && payload.role !== 'admin') {
+            if (body.roleId !== EMPLOYEE_ROLE_ID || payload.role !== 'owner') {
                 return false
             }
+            request['user'] = payload;
             return true;
         } catch (error) {
             return false;

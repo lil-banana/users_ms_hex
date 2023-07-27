@@ -7,7 +7,7 @@ export class UserBirthDay {
         this.ensureIsValidBirthDay(value);
     }
 
-    private ensureValueIsDefined(value: Date | undefined | null): void {
+    private ensureValueIsDefined(value: Date | null): void {
         if (value === null || value === undefined) {
             throw new InvalidArgumentError("Value must be defined");
         }

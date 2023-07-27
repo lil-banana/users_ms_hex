@@ -8,9 +8,9 @@ import { VALID_USER, VALID_USER_NO_ID } from '../../../../mocks/user.mock';
 import { VALID_USER_ENTITY, VALID_USER_ENTITY_NO_ID } from '../../../../mocks/userEntity.mock';
 
 describe('User Adapter', () => {
+    let userAdapter: UserAdapter;
     let userRepository: any;
     let userEntityMapper: any;
-    let userAdapter: UserAdapter;
 
     beforeEach(() => {
         userRepository = {
@@ -33,20 +33,18 @@ describe('User Adapter', () => {
                 const user: User = VALID_USER_NO_ID;
                 const userEntity: UserEntity = VALID_USER_ENTITY_NO_ID;
                 const expectedUserEntity: UserEntity = VALID_USER_ENTITY;
-                const expectedUser: User = VALID_USER;
+                const expectedUserId: string = VALID_USER.id;
 
                 jest.spyOn(userRepository, 'findOneByEmail').mockResolvedValue(null);
                 jest.spyOn(userEntityMapper, 'toUserEntity').mockReturnValue(userEntity);
                 jest.spyOn(userRepository, 'save').mockResolvedValue(expectedUserEntity);
-                jest.spyOn(userEntityMapper, 'toUser').mockReturnValue(expectedUser);
 
                 const result = await userAdapter.saveUser(user);
 
-                expect(result).toEqual(expectedUser);
+                expect(result).toEqual(expectedUserId);
                 expect(userRepository.findOneByEmail).toHaveBeenCalledWith(user.email);
                 expect(userEntityMapper.toUserEntity).toHaveBeenCalledWith(user);
                 expect(userRepository.save).toHaveBeenCalledWith(userEntity);
-                expect(userEntityMapper.toUser).toHaveBeenCalledWith(expectedUserEntity);
             });
         });
 

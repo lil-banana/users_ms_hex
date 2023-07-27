@@ -1,7 +1,6 @@
 import { BadRequestException, HttpStatus } from '@nestjs/common';
-import { HttpExceptionFilter } from '../../../../../../src/auth/infrastructure/controllers/filters/http-exception.filter';
+import { HttpExceptionFilter } from '../../../../../../src/users/infrastructure/controllers/filters/http-exception.filter';
 import { UserNotFoundException } from '../../../../../../src/users/infrastructure/exceptions/userNotFoundException.exception';
-import { PasswordDoNotMatchException } from '../../../../../../src/auth/application/exceptions/passwordDoNotMatch.exception';
 
 describe('Http Exception Filter', () => {
     let httpExceptionFilter: HttpExceptionFilter;
@@ -38,24 +37,9 @@ describe('Http Exception Filter', () => {
         });
 
         it('should handle UserNotFoundException exception', () => {
-            const expectedMessage = 'Incorrect username or password';
+            const expectedMessage = 'User Not found';
             const exception = new UserNotFoundException('message');
-            const expectedStatus = HttpStatus.UNAUTHORIZED;
-
-            httpExceptionFilter.catch(exception, host);
-
-            expect(response.status).toHaveBeenCalledWith(expectedStatus);
-            expect(response.json).toHaveBeenCalledWith({
-                statusCode: expectedStatus,
-                timestamp: expect.any(String),
-                message: expectedMessage
-            });
-        });
-
-        it('should handle PasswordDoNotMatchException exception', () => {
-            const expectedMessage = 'Incorrect username or password';
-            const exception = new PasswordDoNotMatchException('message');
-            const expectedStatus = HttpStatus.UNAUTHORIZED;
+            const expectedStatus = HttpStatus.NOT_FOUND;
 
             httpExceptionFilter.catch(exception, host);
 

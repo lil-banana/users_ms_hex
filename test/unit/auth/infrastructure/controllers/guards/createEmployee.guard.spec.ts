@@ -1,7 +1,8 @@
-import { CreateUserGuard } from '../../../../../../src/auth/infrastructure/controllers/guards/createUser.guard';
+import { EMPLOYEE_ROLE_ID } from '../../../../../../src/users/infrastructure/constants';
+import { CreateEmployeeGuard } from '../../../../../../src/auth/infrastructure/controllers/guards/createEmployee.guard';
 
-describe('Create User Guard', () => {
-    let guard: CreateUserGuard;
+describe('Create Employee Guard', () => {
+    let guard: CreateEmployeeGuard;
     let tokenService: any;
     let context: any;
     let request: any;
@@ -15,6 +16,7 @@ describe('Create User Guard', () => {
                 authorization: 'token',
             },
             body: {
+                roleId: EMPLOYEE_ROLE_ID
             },
         };
         context = {
@@ -22,13 +24,13 @@ describe('Create User Guard', () => {
             getRequest: jest.fn()
         };
 
-        guard = new CreateUserGuard(tokenService);
+        guard = new CreateEmployeeGuard(tokenService);
     });
 
     describe('Success', () => {
-        it('should return true if the token is valid and contains the "admin" role and the request does not carry a roleId', async () => {
+        it('should return true if the token is valid and contains the "owner" role and the request has a roleId for employee', async () => {
             jest.spyOn(context, 'getRequest').mockReturnValue(request);
-            jest.spyOn(tokenService, 'verifyToken').mockReturnValue({ role: 'admin' });
+            jest.spyOn(tokenService, 'verifyToken').mockReturnValue({ role: 'owner' });
 
             const result = await guard.canActivate(context);
             expect(result).toBe(true);
@@ -43,14 +45,6 @@ describe('Create User Guard', () => {
             expect(result).toBe(false);
         });
 
-        it('should return false if the token has no payload', async () => {
-            jest.spyOn(context, 'getRequest').mockReturnValue(request);
-            jest.spyOn(tokenService, 'verifyToken').mockReturnValue(undefined);
-
-            const result = await guard.canActivate(context);
-            expect(result).toBe(false);
-        });
-
         it('should return false if the token payload has no role', async () => {
             jest.spyOn(context, 'getRequest').mockReturnValue(request);
             jest.spyOn(tokenService, 'verifyToken').mockReturnValue({notRole: 'notrole'});
@@ -59,9 +53,9 @@ describe('Create User Guard', () => {
             expect(result).toBe(false);
         });
 
-        it('should return false if the body has no roleId and token payload role is not admin', async () => {
+        it('should return false if the token payload role is not owner', async () => {
             jest.spyOn(context, 'getRequest').mockReturnValue(request);
-            jest.spyOn(tokenService, 'verifyToken').mockReturnValue({role: 'notAdmin'});
+            jest.spyOn(tokenService, 'verifyToken').mockReturnValue({role: 'notOwner'});
 
             const result = await guard.canActivate(context);
             expect(result).toBe(false);

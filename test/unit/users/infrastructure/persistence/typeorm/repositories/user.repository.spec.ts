@@ -10,7 +10,7 @@ describe('User Repository', () => {
     beforeEach(() => {
         entityRepository = {
             save: jest.fn(),
-            findOneBy: jest.fn()
+            findOne: jest.fn()
         };
         userRepository = new UserRepository(entityRepository);
     });
@@ -35,12 +35,12 @@ describe('User Repository', () => {
                 const userId: string = VALID_USER.id;
                 const userEntity: UserEntity = VALID_USER_ENTITY;
 
-                jest.spyOn(entityRepository, 'findOneBy').mockResolvedValue(userEntity);
+                jest.spyOn(entityRepository, 'findOne').mockResolvedValue(userEntity);
     
                 const result = await userRepository.findOneById(userId);
     
                 expect(result).toBe(userEntity);
-                expect(entityRepository.findOneBy).toHaveBeenCalledWith({ id: userId });
+                expect(entityRepository.findOne).toHaveBeenCalledWith({ where: { id: userId }, relations: ['boss'] });
             });
         });
     
@@ -48,12 +48,12 @@ describe('User Repository', () => {
             it('should find a user by email', async () => {
                 const userEntity = VALID_USER_ENTITY;
 
-                jest.spyOn(entityRepository, 'findOneBy').mockResolvedValue(userEntity);
+                jest.spyOn(entityRepository, 'findOne').mockResolvedValue(userEntity);
     
                 const result = await userRepository.findOneByEmail(userEntity.email);
     
                 expect(result).toBe(userEntity);
-                expect(entityRepository.findOneBy).toHaveBeenCalledWith({ email: userEntity.email });
+                expect(entityRepository.findOne).toHaveBeenCalledWith({ where: {  email: userEntity.email }, relations: ['boss'] });
             });
         });
     });

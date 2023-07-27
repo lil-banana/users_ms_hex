@@ -1,5 +1,5 @@
 import { RoleEntity } from './role.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity('User')
 export class UserEntity {
@@ -19,7 +19,7 @@ export class UserEntity {
     @Column({ nullable: false })
     cellphoneNumber: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: true })
     birthDay: Date;
 
     @Column({ unique: true, nullable: false })
@@ -34,6 +34,15 @@ export class UserEntity {
     })
     @JoinColumn({ name: 'roleId' })
     role: RoleEntity;
+
+    @OneToMany(/* istanbul ignore next */ () => UserEntity, /* istanbul ignore next */ user => user.boss)
+    subordinates: UserEntity[];
+
+    @ManyToOne(/* istanbul ignore next */ () => UserEntity, /* istanbul ignore next */ boss => boss.subordinates, {
+        nullable: true,
+    })
+    @JoinColumn({ name: 'bossId' })
+    boss: UserEntity;
 
     @CreateDateColumn()
     createdAt: Date;
