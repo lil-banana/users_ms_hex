@@ -20,7 +20,7 @@ export class EmployeeRequestMapper {
             employeeRequest.email,
             employeeRequest.documentNumber,
             employeeRequest.cellphoneNumber,
-            employeeRequest.birthDay,
+            undefined,
             boss
         );
         return user;

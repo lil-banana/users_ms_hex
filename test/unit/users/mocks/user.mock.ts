@@ -37,6 +37,17 @@ export const VALID_USER_NO_ID = new User(
     new Date('1990-01-01')
 );
 
+export const VALID_USER_NO_ID_NO_DATE = new User(
+    undefined,
+    'John',
+    'Doe',
+    'password',
+    OTHER_ROLE_ONLY_ID,
+    'john@example.com',
+    '123456789',
+    '987654321'
+);
+
 export const VALID_USER_NO_ID_NO_ROLE = new User(
     undefined,
     'John',
@@ -49,7 +60,7 @@ export const VALID_USER_NO_ID_NO_ROLE = new User(
     new Date('1990-01-01'),
 );
 
-export const OTHER_USER = new User(
+export const  OTHER_USER = new User(
     '91a6c3f2-553e-421e-917a-2a2030b2236f',
     'Jane',
     'Doeh',
@@ -78,7 +89,7 @@ export const EMPLOYEE_USER_NO_ID = new User(
     OTHER_USER.email,
     OTHER_USER.documentNumber,
     OTHER_USER.cellphoneNumber,
-    OTHER_USER.birthDay,
+    undefined,
     VALID_USER_ONLY_ID
 );
 
@@ -91,6 +102,32 @@ export const EMPLOYEE_USER = new User(
     OTHER_USER.email,
     OTHER_USER.documentNumber,
     OTHER_USER.cellphoneNumber,
-    OTHER_USER.birthDay,
+    undefined,
     VALID_USER
+);
+
+export const CLIENT_USER_NO_ID = new User(
+    undefined,
+    OTHER_USER.name,
+    OTHER_USER.lastName,
+    OTHER_USER.password,
+    OTHER_ROLE_ONLY_ID,
+    OTHER_USER.email,
+    OTHER_USER.documentNumber,
+    OTHER_USER.cellphoneNumber,
+    undefined,
+    undefined
+);
+
+export const CLIENT_USER = new User(
+    OTHER_USER.id,
+    OTHER_USER.name,
+    OTHER_USER.lastName,
+    OTHER_USER.password,
+    OTHER_ROLE,
+    OTHER_USER.email,
+    OTHER_USER.documentNumber,
+    OTHER_USER.cellphoneNumber,
+    undefined,
+    undefined
 );

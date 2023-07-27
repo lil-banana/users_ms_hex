@@ -72,7 +72,7 @@ export const EMPLOYEE_ENTITY: UserEntity = {
     lastName: OTHER_USER.lastName,
     documentNumber: OTHER_USER.documentNumber,
     cellphoneNumber: OTHER_USER.cellphoneNumber,
-    birthDay: OTHER_USER.birthDay,
+    birthDay: undefined,
     email: OTHER_USER.email,
     password: OTHER_USER.password,
     role: OTHER_ROLE_ENTITY,

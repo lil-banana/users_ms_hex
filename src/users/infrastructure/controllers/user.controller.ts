@@ -14,6 +14,9 @@ import { User } from '../../domain/models/user.model';
 import { CreateOwnerGuard } from '../../../auth/infrastructure/controllers/guards/createOwner.guard';
 import { CreateEmployeeGuard } from '../../../auth/infrastructure/controllers/guards/createEmployee.guard';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { ClientRequestMapper } from './mappers/clientRequest.mapper';
+import { ClientRequest } from './dtos/clientRequest.dto';
+import { CreateClientGuard } from '../../../auth/infrastructure/controllers/guards/createClient.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -21,6 +24,7 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 export class UserController {
     private readonly ownerRequestMapper: OwnerRequestMapper = new OwnerRequestMapper();
     private readonly employeeRequestMapper: EmployeeRequestMapper = new EmployeeRequestMapper();
+    private readonly clientRequestMapper: ClientRequestMapper = new ClientRequestMapper();
     private readonly userIdDtoMapper: UserIdDtoMapper = new UserIdDtoMapper();
     private readonly userResponseMapper: UserResponseMapper = new UserResponseMapper();
 
@@ -42,6 +46,14 @@ export class UserController {
     @ApiResponse({ status: 201, description: 'Creates a new employee user', type: UserIdDto })
     async saveEmployee(@Body() employeeRequest: EmployeeRequest, @Request() request: any): Promise<UserIdDto> {
         const user: User = this.employeeRequestMapper.toUser(employeeRequest, request.user.userId);
+        return this.userIdDtoMapper.toUserIdDto(await this.createUserUseCase.saveUser(user));
+    }
+
+    @Post('client')
+    @UseGuards(CreateClientGuard)
+    @ApiResponse({ status: 201, description: 'Creates a new client user', type: UserIdDto })
+    async saveClient(@Body() cientRequest: ClientRequest): Promise<UserIdDto> {
+        const user: User = this.clientRequestMapper.toUser(cientRequest);
         return this.userIdDtoMapper.toUserIdDto(await this.createUserUseCase.saveUser(user));
     }
 
