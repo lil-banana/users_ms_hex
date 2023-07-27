@@ -48,12 +48,14 @@ describe('User Model', () => {
             user.birthDay = OTHER_USER.birthDay;
             user.password = OTHER_USER.password;
             user.role = OTHER_USER.role;
+            user.boss = VALID_USER;
 
             expect(user.lastName).toBe(OTHER_USER.lastName);
             expect(user.cellphoneNumber).toBe(OTHER_USER.cellphoneNumber);
             expect(user.birthDay).toEqual(OTHER_USER.birthDay);
             expect(user.password).toBe(OTHER_USER.password);
             expect(user.role).toBe(OTHER_USER.role);
+            expect(user.boss).toBe(VALID_USER);
         });
     });
 });

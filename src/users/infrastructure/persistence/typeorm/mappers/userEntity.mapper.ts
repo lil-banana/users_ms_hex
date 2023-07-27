@@ -15,9 +15,9 @@ export class UserEntityMapper {
             userEntity.email,
             userEntity.documentNumber,
             userEntity.cellphoneNumber,
-            userEntity.birthDay
+            userEntity.birthDay,
+            userEntity.boss ? this.toUser(userEntity.boss) : undefined
         );
-        user.boss = userEntity.boss ? this.toUser(userEntity.boss) : undefined;
         return user;
     }
 
